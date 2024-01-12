@@ -17,12 +17,9 @@ import reactor.util.function.Tuples;
 public class WindowedMemoryService implements MemoryService {
 
   private final ModelInfoService modelInfoService;
-  private final SerializationDelegator serializationDelegator;
 
-  WindowedMemoryService(final ModelInfoService modelInfoService,
-      final SerializationDelegator serializationDelegator) {
+  WindowedMemoryService(final ModelInfoService modelInfoService) {
     this.modelInfoService = modelInfoService;
-    this.serializationDelegator = serializationDelegator;
   }
 
   @Override
@@ -30,12 +27,10 @@ public class WindowedMemoryService implements MemoryService {
       String model) {
     final ModelType modelType = ModelType.fromString(model);
     final long MAX_INPUT_TOKENS = modelInfoService.getMaxInputTokens(modelType);
-    final int messagePaddingTokens = modelInfoService.getMessagePaddingTokens(modelType);
     final Tokenizer tokenizer = modelInfoService.getTokenizer(modelType);
     final List<Tuple2<Long, ExpressionValue>> tokenPairs = conversation.getExpressions().stream()
         .map(value -> {
-          final String serialized = serializationDelegator.serializeAsString(value, model);
-          final long tokenCount = tokenizer.countTokens(serialized) + messagePaddingTokens;
+          final long tokenCount = tokenizer.countTokens(value.content());
           return Tuples.of(tokenCount, value);
         })
         .toList();

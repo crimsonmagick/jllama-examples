@@ -21,13 +21,12 @@ public class DatabaseConfiguration {
   public ConnectionFactory connectionFactory() {
     return new H2ConnectionFactory(
         H2ConnectionConfiguration.builder()
-            .file("/pal/db/paldb")
+            .file("/llama/db/chatdb")
             .username("sa")
             .password("")
             .build()
     );
   }
-
 
   @Bean
   public ApplicationListener<ContextRefreshedEvent> initializer(final ConnectionFactory connectionFactory) {
