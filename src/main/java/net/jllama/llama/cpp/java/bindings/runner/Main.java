@@ -30,7 +30,7 @@ public class Main {
       final Evaluator evaluator = new Evaluator();
 //      final String prompt1 = "Write a hashtable implementation in Java. Do not use `HashMap`, `Map`, or `HashTable` in the implementation. DO NOT IMPORT THOSE CLASSES. This class should be written from \"scratch\". The key should be a String, and the value an Object. The implementation should handle collisions.";
 //      final String prompt1 = "Write an example Spring Controller in Java.";
-      final String prompt1 = "Tell me your tale, dear sir.";
+      final String prompt1 = "What kind of taste do you have in women?";
       evaluator.evaluate(systemPrompt(piratePrompt) + chatPrompt(prompt1));
       System.out.println("------------------------------------------------");
       System.out.println("------------------------------------------------");
