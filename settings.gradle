@@ -1,2 +1,3 @@
 rootProject.name = 'jllama-examples'
 include 'evaluator'
+include 'application'

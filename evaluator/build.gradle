@@ -44,7 +44,7 @@ task runProgram(type: JavaExec) {
 
     dependsOn 'build'
     mainClass = 'net.jllama.llama.cpp.java.bindings.runner.Main'
-    args System.getProperty("modelPath")
+    args System.getProperty("modelPath") || ''
 
     // Uncomment below for testing custom builds of jni-implementation and llama-cpp
 //    final jniBuildType = 'debug'
