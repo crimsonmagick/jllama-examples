@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenLocal()
@@ -39,14 +39,14 @@ dependencies {
 import static org.gradle.internal.os.OperatingSystem.current
 
 task runProgram(type: JavaExec) {
-    description = 'Runs the main program'
+    description = 'Runs the evaluator example'
     group = 'application'
 
-    dependsOn ':build'
+    dependsOn 'build'
     mainClass = 'net.jllama.llama.cpp.java.bindings.runner.Main'
-    systemProperty "modelpath", System.getProperty("modelpath")
+    args System.getProperty("modelPath")
 
-    // Uncomment below for using custom builds of jni-implementation and llama-cpp
+    // Uncomment below for testing custom builds of jni-implementation and llama-cpp
 //    final jniBuildType = 'debug'
 //    final llamaCppBuildType = 'release'
 //    final bridgeRelativePath = "/build-cmake-${jniBuildType}/jni-implementation/${jniBuildType}"

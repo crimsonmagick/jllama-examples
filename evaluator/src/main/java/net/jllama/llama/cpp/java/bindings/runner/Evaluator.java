@@ -20,8 +20,7 @@ public class Evaluator implements AutoCloseable {
   private final Context context;
   private int nextSeqId;
 
-  Evaluator() {
-    final String modelPath = System.getProperty("modelpath");
+  Evaluator(final String modelPath) {
     llamaApi = Llama.library();
 
     model = llamaApi.newModel()
