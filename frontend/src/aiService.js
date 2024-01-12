@@ -31,7 +31,7 @@ const getSingleton = (url) => {
   }).then(response => response.json());
 }
 
-const invokeService = async (resourceUrl, inputValue, callback, model = "gpt-3") => {
+const invokeService = async (resourceUrl, inputValue, callback, model = "llama") => {
   const response = await fetch(config.API_URL + resourceUrl, {
     method: 'POST',
     headers: {

@@ -44,7 +44,7 @@ public class ConversationSingletonController {
 
   @PostMapping("/singleton/conversations/{id}/expressions")
   public Mono<ExpressionJson> sendExpression(@PathVariable String id, @RequestBody ExpressionJson expressionJson) {
-    final String model = expressionJson.model() == null ? "gpt-3" : expressionJson.model();
+    final String model = expressionJson.model() == null ? "llama" : expressionJson.model();
     return conversationSingletonService.sendExpression(id, expressionJson.content(), model)
         .map(expressionValue -> new ExpressionJson(id, expressionValue.content(), expressionValue.actor().toString(), model, null))
         .doOnError(ConversationSingletonController::error);
@@ -52,7 +52,7 @@ public class ConversationSingletonController {
 
   @PostMapping("/singleton/conversations")
   public Mono<ExpressionJson> startConversation(@RequestBody ExpressionJson expressionJson) {
-    final String model = expressionJson.model() == null ? "gpt-3" : expressionJson.model();
+    final String model = expressionJson.model() == null ? "llama" : expressionJson.model();
     return conversationSingletonService.startConversation(expressionJson.content(), model)
         .map(conversation -> {
           final ExpressionValue lastExpression = conversation.getLastExpression();

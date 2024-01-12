@@ -13,7 +13,7 @@ public class ModelInfoService {
 
   private static final int LLAMA_MAX_INPUT_TOKENS = 3000;
   @Value("${prompts.initial.chat}")
-  private final String chatGptSeed;
+  private final String initialPrompt;
   private final Model llamaApiModel;
 
   public enum ModelType {
@@ -46,7 +46,7 @@ public class ModelInfoService {
 
   public String getInitialPrompt(final ModelType model) {
     if (model == LLAMA_2) {
-      return chatGptSeed;
+      return initialPrompt;
     }
     throw new RuntimeException("Unrecognized model type.");
   }
