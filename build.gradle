@@ -15,7 +15,7 @@ repositories {
 }
 
 ext {
-  jLlamaVersion = '0.0.11-SNAPSHOT'
+  jLlamaVersion = '0.0.1-SNAPSHOT'
 }
 
 dependencies {
@@ -23,14 +23,14 @@ dependencies {
     // Linux
     implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
     implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
-    // Mac
+//    // Mac
     implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
     implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
-    // Windows
+//    // Windows
     implementation "net.jllama:jni-implementation:${jLlamaVersion}:windows_x64"
     implementation "net.jllama:llama-cpp:${jLlamaVersion}:windows_x64"
     // non-llama deps
-    implementation "org.apache.logging.log4j:log4j-core:2.20.0"
+    implementation "org.apache.logging.log4j:log4j-core:2.22.0"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.2"
@@ -45,14 +45,14 @@ task runProgram(type: JavaExec) {
     dependsOn ':build'
     mainClass = 'net.jllama.llama.cpp.java.bindings.runner.Main'
     systemProperty "modelpath", System.getProperty("modelpath")
-    systemProperty "loglevel", System.getProperty("loglevel")
 
     // Uncomment below for using custom builds of jni-implementation and llama-cpp
-//
-//    final bridgeRelativePath = '/build-cmake-debug/jni-implementation/debug'
+//    final jniBuildType = 'debug'
+//    final llamaCppBuildType = 'release'
+//    final bridgeRelativePath = "/build-cmake-${jniBuildType}/jni-implementation/${jniBuildType}"
 //    final bridgeAbsolutePath = projectDir as String + bridgeRelativePath
 //    systemProperty 'java.library.path', bridgeAbsolutePath
-//    final llamaRelativePath = '/build-cmake-release/llama/release'
+//    final llamaRelativePath = "/build-cmake-${llamaCppBuildType}/llama/${llamaCppBuildType}"
 //    final String llamaAbsolutePath = projectDir as String + llamaRelativePath
 //    final dllPath = current().isWindows() ? 'PATH' :
 //            current().isMacOsX() ? 'DYLD_LIBRARY_PATH' : 'LD_LIBRARY_PATH'
