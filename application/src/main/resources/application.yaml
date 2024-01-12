@@ -2,7 +2,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   webflux:
-    base-path: /mango/melancholy/pal
+    base-path: /jllama/examples/chat
 management:
   endpoints.web:
     exposure.include: health,info,metrics,beans
