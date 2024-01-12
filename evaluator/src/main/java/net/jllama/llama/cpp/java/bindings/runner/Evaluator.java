@@ -82,16 +82,9 @@ public class Evaluator implements AutoCloseable {
 
   private int sample(final List<Float> logits, final List<Integer> previousTokens) {
     return context.sampler(logits)
-//        .keepTopK(50)
-//        .applyTemperature(1.1f)
-//        .keepMinP(0.4f)
-//        .keepTopP(0.9f)
-//        .applySoftmax()
-//        .applyLocallyTypical(0.1f)
-//        .applyTailFree(0.1f)
-        .applyRepetitionPenalties(previousTokens, 1f, 1.1f, 1.5f)
+        .keepTopK(50)
+        .applyTemperature(1.1f)
         .sample();
-
   }
 
   @Override
