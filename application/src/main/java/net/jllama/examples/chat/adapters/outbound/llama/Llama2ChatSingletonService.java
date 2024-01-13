@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
-public class LlamaSingletonService implements AiSingletonService {
+public class Llama2ChatSingletonService implements AiSingletonService {
 
   private final LlamaService llamaService;
   private final LlamaConversationSerializer serializer;

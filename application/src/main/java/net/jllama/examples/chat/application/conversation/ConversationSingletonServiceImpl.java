@@ -46,16 +46,17 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
   }
 
   @Override
-  public Mono<ConversationEntity> startConversation(final String messageContent, final String model) {
+  public Mono<ConversationEntity> startConversation(final String messageContent,
+      final String model) {
     final ModelType modelType = ModelType.fromString(model);
-    final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(modelType);
+    final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(
+        modelType);
     final ExpressionValue conversationSeed = new ExpressionValue(
         modelInfoService.getInitialPrompt(modelType), ActorType.INITIAL_PROMPT, null);
     final ExpressionValue userGreeting = new ExpressionValue(messageContent, ActorType.USER, null);
     final ConversationEntity startOfConversation = new ConversationEntity(conversationSeed,
         userGreeting);
-    return conversationRepository.create(
-            startOfConversation.toRecord())
+    return conversationRepository.create(startOfConversation.toRecord())
         .flatMap(conversationRecord -> {
           final ConversationEntity savedConversation = ConversationEntity.fromRecord(
               conversationRecord);
@@ -71,12 +72,15 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
   public Mono<ExpressionValue> sendExpression(final String conversationId,
       final String messageContent, final String model) {
     final ModelType modelType = ModelType.fromString(model);
-    final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(modelType);
+    final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(
+        modelType);
     return conversationRepository.getConversation(conversationId)
         .switchIfEmpty(Mono.error(new ConversationNotFound(conversationId)))
         .flatMap(conversationRecord -> {
-          final ExpressionValue requestExpression = new ExpressionValue(messageContent, ActorType.USER, conversationId);
-          final ConversationEntity fullConversation = ConversationEntity.fromRecord(conversationRecord)
+          final ExpressionValue requestExpression = new ExpressionValue(messageContent,
+              ActorType.USER, conversationId);
+          final ConversationEntity fullConversation = ConversationEntity.fromRecord(
+                  conversationRecord)
               .addExpression(requestExpression);
           final ConversationEntity rememberedConversation = memoryService.rememberConversation(
               fullConversation, model);

@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 
 @RequiredArgsConstructor
 @Service
-public class LlamaStreamedService implements AiStreamedService {
+public class Llama2ChatStreamedService implements AiStreamedService {
 
   private final LlamaService llamaService;
   private final LlamaConversationSerializer serializer;

@@ -1,10 +1,11 @@
 package net.jllama.examples.chat.adapters.inbound.rest;
 
-import net.jllama.examples.chat.application.conversation.ConversationSingletonServiceImpl;
-import net.jllama.examples.chat.application.conversation.ExpressionValue;
-import net.jllama.examples.chat.application.conversation.ports.primary.ConversationSummary;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.jllama.examples.chat.application.conversation.ConversationSingletonServiceImpl;
+import net.jllama.examples.chat.application.conversation.ExpressionValue;
+import net.jllama.examples.chat.application.conversation.ports.primary.ConversationSingletonService;
+import net.jllama.examples.chat.application.conversation.ports.primary.ConversationSummary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ import reactor.core.publisher.Mono;
 public class ConversationSingletonController {
 
   private static final Logger log = LogManager.getLogger(ConversationSingletonController.class);
-  private final ConversationSingletonServiceImpl conversationSingletonService;
+  private final ConversationSingletonService conversationSingletonService;
 
   public ConversationSingletonController(final ConversationSingletonServiceImpl conversationSingletonService) {
     this.conversationSingletonService = conversationSingletonService;

@@ -1,7 +1,7 @@
 package net.jllama.examples.chat.application;
 
-import net.jllama.examples.chat.adapters.outbound.llama.LlamaSingletonService;
-import net.jllama.examples.chat.adapters.outbound.llama.LlamaStreamedService;
+import net.jllama.examples.chat.adapters.outbound.llama.Llama2ChatSingletonService;
+import net.jllama.examples.chat.adapters.outbound.llama.Llama2ChatStreamedService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiSingletonService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiStreamedService;
 import net.jllama.examples.chat.infrastructure.ModelInfoService.ModelType;
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AiServiceResolver {
 
-  private final LlamaSingletonService llamaSingletonService;
-  private final LlamaStreamedService llamaStreamedService;
+  private final Llama2ChatSingletonService llama2ChatSingletonService;
+  private final Llama2ChatStreamedService llama2ChatStreamedService;
 
   public AiSingletonService resolveSingletonService(final ModelType modelType) {
-    return llamaSingletonService;
+    return llama2ChatSingletonService;
   }
 
   public AiStreamedService resolveStreamedService(final ModelType modelType) {
-    return llamaStreamedService;
+    return llama2ChatStreamedService;
   }
 
 }
