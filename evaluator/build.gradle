@@ -21,11 +21,11 @@ ext {
 dependencies {
     implementation "net.jllama:jni-bindings:${jLlamaVersion}"
     // Linux
-    implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
-    implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
+//    implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
+//    implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
     // Mac
-    implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
-    implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
+//    implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
+//    implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
     // Windows
     implementation "net.jllama:jni-implementation:${jLlamaVersion}:windows_x64"
     implementation "net.jllama:llama-cpp:${jLlamaVersion}:windows_x64"
@@ -44,7 +44,11 @@ task runProgram(type: JavaExec) {
 
     dependsOn 'build'
     mainClass = 'net.jllama.llama.cpp.java.bindings.runner.Main'
-    args System.getProperty("modelPath") || ''
+    final modelPath = System.getProperty("modelPath")
+    if (!modelPath) {
+        throw new GroovyRuntimeException("modelPath must be provided")
+    }
+    args modelPath
 
     // Uncomment below for testing custom builds of jni-implementation and llama-cpp
 //    final jniBuildType = 'debug'
