@@ -9,4 +9,6 @@ public interface AiSingletonService {
 
   Mono<ExpressionValue> exchange(final ConversationEntity conversationEntity);
 
+  Mono<ExpressionValue> exchange(final ExpressionValue expressionValue);
+
 }

@@ -23,4 +23,11 @@ public class ChatSingletonService implements AiSingletonService {
         .map(response -> new ExpressionValue(response, ActorType.AGENT,
             conversationEntity.getConversationId()));
   }
+
+  @Override
+  public Mono<ExpressionValue> exchange(final ExpressionValue expressionValue) {
+    return llamaService.singletonCompletion(serializer.serialize(expressionValue))
+        .map(response -> new ExpressionValue(response, ActorType.AGENT,
+            expressionValue.conversationId()));
+  }
 }

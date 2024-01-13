@@ -58,4 +58,8 @@ public class LlamaConversationSerializer {
     return serialized.toString();
   }
 
+  public String serialize(final ExpressionValue expressionValue) {
+    return B_INST + expressionValue.content() + E_INST;
+  }
+
 }
