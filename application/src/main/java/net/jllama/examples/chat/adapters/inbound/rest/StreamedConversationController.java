@@ -23,8 +23,7 @@ public class StreamedConversationController {
 
   @PostMapping(value = "/streamed/conversations/{id}/expressions", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ExpressionFragment> sendExpression(@PathVariable String id, @RequestBody ExpressionJson expressionJson) {
-    final String model = expressionJson.model() == null ? "llama" : expressionJson.model();
-    return conversationStreamedService.sendExpression(id, expressionJson.content(), model)
+    return conversationStreamedService.sendExpression(id, expressionJson.content())
         .doOnError(throwable -> {
           log.error("Error processing request.", throwable);
         });
@@ -32,8 +31,7 @@ public class StreamedConversationController {
 
   @PostMapping(value = "/streamed/conversations", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ExpressionFragment> startStreamedConversation(final @RequestBody ExpressionJson expressionJson) {
-    final String model = expressionJson.model() == null ? "llama" : expressionJson.model();
-    return conversationStreamedService.startConversation(expressionJson.content(), model)
+    return conversationStreamedService.startConversation(expressionJson.content())
         .doOnError(throwable -> {
           log.error("Error processing request.", throwable);
         });

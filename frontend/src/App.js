@@ -11,8 +11,6 @@ function App() {
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [conversationSummaries, setConversationSummaries] = useState([]);
 
-  const availableModels = ["llama"];
-  const [model, setModel] = useState('llama');
   const dispatch = useDispatch();
   const conversations = useSelector(state => state.conversations);
 
@@ -34,8 +32,7 @@ function App() {
     if (!conversations[conversationId]) {
       fetchExpressions(conversationId)
         .then(expressions => {
-          const conversationMessages = expressions
-            .filter(expression => expression.actorId !== "INITIAL_PROMPT");
+          const conversationMessages = expressions.slice(1); // remove initial prompt
           dispatch(addConversation({conversationId, messages: conversationMessages}));
           setNextMessageIndex(conversationId, conversationMessages.length);
         });
@@ -79,7 +76,7 @@ function App() {
           dispatchMessageUpdate(conversationId, message, 1); // response will always be after user message
           setNextMessageIndex(conversationId, 2);
         };
-        const response = await startConversation(inputValue, newConversationCallback, model);
+        const response = await startConversation(inputValue, newConversationCallback);
         setReceiving(response.conversationId, false);
       } else {
         const conversationId = currentConversationId;
@@ -91,7 +88,7 @@ function App() {
         dispatchMessageUpdate(conversationId, {contentFragment: inputValue}, userMessageIndex);
         dispatchMessageUpdate(conversationId, {contentFragment: ''}, responseMessageIndex);
         setNextMessageIndex(conversationId, responseMessageIndex + 1);
-        await sendExpression(conversationId, inputValue, message => dispatchMessageUpdate(conversationId, message, responseMessageIndex), model);
+        await sendExpression(conversationId, inputValue, message => dispatchMessageUpdate(conversationId, message, responseMessageIndex));
         setReceiving(conversationId, false);
       }
     } catch (error) {
@@ -117,9 +114,6 @@ function App() {
       <MessageInputForm
         isSubmitDisabled={isSubmitDisabled}
         handleFormSubmit={handleFormSubmit}
-        availableModels={availableModels}
-        currentModel={model}
-        updateModel={setModel}
       />
     </div>
   </div>);

@@ -4,6 +4,6 @@ import net.jllama.examples.chat.application.conversation.ConversationEntity;
 
 public interface MemoryService {
 
-  ConversationEntity rememberConversation(ConversationEntity conversation, String model);
+  ConversationEntity rememberConversation(ConversationEntity conversation);
 
 }

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-export function MessageInputForm({isSubmitDisabled, handleFormSubmit, availableModels, currentModel, updateModel}) {
+export function MessageInputForm({isSubmitDisabled, handleFormSubmit}) {
   const [inputValue, setInputValue] = useState('');
   const [textAreaRows, setTextAreaRows] = useState(1);
   const MAX_ROW_NUMBER = 10;
@@ -23,11 +23,6 @@ export function MessageInputForm({isSubmitDisabled, handleFormSubmit, availableM
     }
   };
 
-  const updateModelHandler = (event) => {
-    event.preventDefault();
-    updateModel(event.target.value);
-  }
-
   return (
     <form
       onSubmit={(event) => {
@@ -36,19 +31,6 @@ export function MessageInputForm({isSubmitDisabled, handleFormSubmit, availableM
       }}
       className="form-container">
       <div className="input-wrapper">
-        <div className="select-wrapper">
-          <select className="model-select" value={currentModel} onChange={updateModelHandler}>
-            {
-              availableModels.map(
-                (model) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                )
-              )
-            }
-          </select>
-        </div>
         <textarea value={inputValue} onChange={handleInputTextChange} onKeyDown={handleKeyDown} rows={textAreaRows}/>
         <div className="button-wrapper">
           <button type="submit" disabled={isSubmitDisabled() || inputValue === null || inputValue.trim() === ''}><i className="fa fa-paper-plane"></i></button>

@@ -8,11 +8,10 @@ import net.jllama.examples.chat.application.conversation.ports.primary.Conversat
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiSingletonService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.ConversationRepository;
 import net.jllama.examples.chat.application.conversation.ports.secondary.MemoryService;
-import net.jllama.examples.chat.infrastructure.ModelInfoService;
-import net.jllama.examples.chat.infrastructure.ModelInfoService.ModelType;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +22,8 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
   private final AiServiceResolver aiServiceResolver;
   private final ConversationRepository conversationRepository;
   private final MemoryService memoryService;
-  private final ModelInfoService modelInfoService;
+  @Value("${prompts.initial.chat}")
+  private final String initialPrompt;
 
   @Override
   public Mono<List<ExpressionValue>> getExpressions(final String conversationId) {
@@ -46,21 +46,18 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
   }
 
   @Override
-  public Mono<ConversationEntity> startConversation(final String messageContent,
-      final String model) {
-    final ModelType modelType = ModelType.fromString(model);
+  public Mono<ConversationEntity> startConversation(final String messageContent) {
     final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(
-        modelType);
-    final ExpressionValue conversationSeed = new ExpressionValue(
-        modelInfoService.getInitialPrompt(modelType), ActorType.INITIAL_PROMPT, null);
+        ConversationFormat.CHAT);
+    final ExpressionValue systemPrompt = new ExpressionValue(initialPrompt, ActorType.SYSTEM, null);
     final ExpressionValue userGreeting = new ExpressionValue(messageContent, ActorType.USER, null);
-    final ConversationEntity startOfConversation = new ConversationEntity(conversationSeed,
+    final ConversationEntity startOfConversation = new ConversationEntity(systemPrompt,
         userGreeting);
     return conversationRepository.create(startOfConversation.toRecord())
         .flatMap(conversationRecord -> {
           final ConversationEntity savedConversation = ConversationEntity.fromRecord(
               conversationRecord);
-          return aiSingletonService.exchange(savedConversation, modelType)
+          return aiSingletonService.exchange(savedConversation)
               .flatMap(expressionValue -> conversationRepository.addExpression(
                   expressionValue.toRecord()))
               .map(expressionRecord -> savedConversation.addExpression(
@@ -70,10 +67,9 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
 
   @Override
   public Mono<ExpressionValue> sendExpression(final String conversationId,
-      final String messageContent, final String model) {
-    final ModelType modelType = ModelType.fromString(model);
+      final String messageContent) {
     final AiSingletonService aiSingletonService = aiServiceResolver.resolveSingletonService(
-        modelType);
+        ConversationFormat.CHAT);
     return conversationRepository.getConversation(conversationId)
         .switchIfEmpty(Mono.error(new ConversationNotFound(conversationId)))
         .flatMap(conversationRecord -> {
@@ -83,8 +79,8 @@ public class ConversationSingletonServiceImpl implements ConversationSingletonSe
                   conversationRecord)
               .addExpression(requestExpression);
           final ConversationEntity rememberedConversation = memoryService.rememberConversation(
-              fullConversation, model);
-          return aiSingletonService.exchange(rememberedConversation, modelType)
+              fullConversation);
+          return aiSingletonService.exchange(rememberedConversation)
               .flatMap(responseExpression ->
                   conversationRepository.addExpression(requestExpression.toRecord())
                       .then(conversationRepository.addExpression(responseExpression.toRecord()))

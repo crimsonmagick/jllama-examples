@@ -1,10 +1,12 @@
 package net.jllama.examples.chat.application;
 
-import net.jllama.examples.chat.adapters.outbound.llama.Llama2ChatSingletonService;
-import net.jllama.examples.chat.adapters.outbound.llama.Llama2ChatStreamedService;
+import static net.jllama.examples.chat.application.conversation.ConversationFormat.CHAT;
+
+import net.jllama.examples.chat.adapters.outbound.llama.ChatSingletonService;
+import net.jllama.examples.chat.adapters.outbound.llama.ChatStreamedService;
+import net.jllama.examples.chat.application.conversation.ConversationFormat;
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiSingletonService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiStreamedService;
-import net.jllama.examples.chat.infrastructure.ModelInfoService.ModelType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +14,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class AiServiceResolver {
 
-  private final Llama2ChatSingletonService llama2ChatSingletonService;
-  private final Llama2ChatStreamedService llama2ChatStreamedService;
+  private final ChatSingletonService chatSingletonService;
+  private final ChatStreamedService chatStreamedService;
 
-  public AiSingletonService resolveSingletonService(final ModelType modelType) {
-    return llama2ChatSingletonService;
+  public AiSingletonService resolveSingletonService(final ConversationFormat conversationFormat) {
+    if (conversationFormat == CHAT) {
+      return chatSingletonService;
+    }
+    throw new IllegalArgumentException(
+        "Unsupported conversationFormat=" + conversationFormat.getValue());
   }
 
-  public AiStreamedService resolveStreamedService(final ModelType modelType) {
-    return llama2ChatStreamedService;
-  }
+  public AiStreamedService resolveStreamedService(final ConversationFormat conversationFormat) {
+    if (conversationFormat == CHAT) {
+      return chatStreamedService;
+    }
+    throw new IllegalArgumentException(
+        "Unsupported conversationFormat=" + conversationFormat.getValue());  }
 
 }

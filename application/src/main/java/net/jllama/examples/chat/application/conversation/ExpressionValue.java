@@ -5,7 +5,7 @@ import net.jllama.examples.chat.application.conversation.ports.secondary.Express
 public record ExpressionValue(String content, ActorType actor, String conversationId) {
 
   public enum ActorType {
-    INITIAL_PROMPT, USER, SYSTEM, PAL
+    USER, SYSTEM, AGENT
   }
 
   public ExpressionValue {

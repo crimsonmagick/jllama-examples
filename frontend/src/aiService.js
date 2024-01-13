@@ -1,11 +1,11 @@
 import config from './Config';
 
-const startConversation = async (text, callback, model) => {
-  return invokeService("/streamed/conversations", text, callback, model);
+const startConversation = async (text, callback) => {
+  return invokeService("/streamed/conversations", text, callback);
 }
 
-const sendExpression = async (conversationId, text, callback, model) => {
-  return invokeService(`/streamed/conversations/${conversationId}/expressions`, text, callback, model);
+const sendExpression = async (conversationId, text, callback) => {
+  return invokeService(`/streamed/conversations/${conversationId}/expressions`, text, callback);
 }
 
 const fetchConversationIds = () => {
@@ -31,13 +31,13 @@ const getSingleton = (url) => {
   }).then(response => response.json());
 }
 
-const invokeService = async (resourceUrl, inputValue, callback, model = "llama") => {
+const invokeService = async (resourceUrl, inputValue, callback) => {
   const response = await fetch(config.API_URL + resourceUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({content: inputValue, model}),
+    body: JSON.stringify({content: inputValue}),
   });
 
   if (response.status === 200 && response.headers.get('Content-Type') === 'application/x-ndjson') {

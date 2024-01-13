@@ -32,7 +32,7 @@ public class LlamaConversationSerializer {
       // aggregate all system and user prompts until a response is encountered
       while (i < expressions.size()) {
         final ExpressionValue current = expressions.get(i);
-        if (current.actor() == ActorType.PAL) {
+        if (current.actor() == ActorType.AGENT) {
           response.append(current.content());
           break;
         } else if (current.actor() == ActorType.USER) {
