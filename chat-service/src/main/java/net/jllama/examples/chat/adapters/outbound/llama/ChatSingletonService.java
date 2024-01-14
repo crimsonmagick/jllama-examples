@@ -45,7 +45,7 @@ public class ChatSingletonService implements AiSingletonService {
           .map(record -> serializer.serialize(fromRecord(record)));
     }
     return toCompleteMono.flatMap(toComplete ->
-        llamaService.complete(conversationId, serializer.serialize(expressionValue))
+        llamaService.complete(conversationId, toComplete)
             .collect(Collectors.joining())
             .map(response -> new ExpressionValue(response, ActorType.AGENT, conversationId)));
   }

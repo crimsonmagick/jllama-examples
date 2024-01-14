@@ -46,7 +46,7 @@ public class ChatStreamedService implements AiStreamedService {
           .map(record -> serializer.serialize(fromRecord(record)));
     }
     return toCompleteMono.flatMapMany(toComplete ->
-            llamaService.complete(conversationId, serializer.serialize(expressionValue)))
+            llamaService.complete(conversationId, toComplete))
         .index()
         .map(respTuple -> new ExpressionFragment(respTuple.getT2(), conversationId,
             respTuple.getT1()));
