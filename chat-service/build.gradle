@@ -9,6 +9,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
+  mavenLocal()
   maven {
     name = 'OSSRH'
     url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
@@ -18,7 +19,7 @@ repositories {
 
 ext {
   log4j2Version = '2.20.0'
-  jLlamaVersion = '0.0.1-SNAPSHOT'
+  jLlamaVersion = 'local-test-3-SNAPSHOT'
 }
 
 dependencies {
@@ -32,12 +33,12 @@ dependencies {
 
   implementation "net.jllama:jni-bindings:${jLlamaVersion}"
   // Linux
-  implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
-  implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
+//  implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
+//  implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
   // Mac
-  implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
-  implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
-  // Windows
+//  implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
+//  implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
+//   Windows
   implementation "net.jllama:jni-implementation:${jLlamaVersion}:windows_x64"
   implementation "net.jllama:llama-cpp:${jLlamaVersion}:windows_x64"
 

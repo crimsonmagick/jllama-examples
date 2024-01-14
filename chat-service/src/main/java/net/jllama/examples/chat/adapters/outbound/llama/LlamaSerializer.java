@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LlamaConversationSerializer {
+public class LlamaSerializer {
 
   private static final String B_INST = "<s>[INST]";
   private static final String E_INST = "[/INST]";
@@ -59,6 +59,10 @@ public class LlamaConversationSerializer {
   }
 
   public String serialize(final ExpressionValue expressionValue) {
+    if (expressionValue.actor() != ActorType.USER) {
+      throw new IllegalArgumentException(
+          "When serializing a single expression, the expression must have an actor of ActorType.USER");
+    }
     return B_INST + expressionValue.content() + E_INST;
   }
 

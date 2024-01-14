@@ -44,10 +44,7 @@ task runProgram(type: JavaExec) {
 
     dependsOn 'build'
     mainClass = 'net.jllama.llama.cpp.java.bindings.runner.Main'
-    final modelPath = System.getProperty("modelPath")
-    if (!modelPath) {
-        throw new GroovyRuntimeException("modelPath must be provided")
-    }
+    final modelPath = System.getProperty("modelPath") || ''
     args modelPath
 
     // Uncomment below for testing custom builds of jni-implementation and llama-cpp

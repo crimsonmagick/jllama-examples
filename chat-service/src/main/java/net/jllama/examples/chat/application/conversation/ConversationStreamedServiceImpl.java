@@ -6,7 +6,6 @@ import net.jllama.examples.chat.application.conversation.ports.primary.Conversat
 import net.jllama.examples.chat.application.conversation.ports.primary.ConversationStreamedService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.AiStreamedService;
 import net.jllama.examples.chat.application.conversation.ports.secondary.ConversationRepository;
-import net.jllama.examples.chat.application.conversation.ports.secondary.MemoryService;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,6 @@ public class ConversationStreamedServiceImpl implements
 
   private final AiServiceResolver aiServiceResolver;
   private final ConversationRepository conversationRepository;
-  private final MemoryService memoryService;
   @Value("${prompts.initial.chat}")
   private final String initialPrompt;
 
@@ -67,13 +65,9 @@ public class ConversationStreamedServiceImpl implements
         .flatMapMany(retrievedConversation -> {
           final ExpressionValue requestExpression = new ExpressionValue(messageContent,
               ActorType.USER, conversationId);
-          final ConversationEntity fullConversation = retrievedConversation.addExpression(
-              requestExpression);
-          final ConversationEntity rememberedConversation = memoryService.rememberConversation(
-              fullConversation);
           final Flux<ExpressionFragment> fragmentStream = conversationRepository.addExpression(
                   requestExpression.toRecord())
-              .thenMany(aiStreamedService.exchange(rememberedConversation))
+              .thenMany(aiStreamedService.exchange(requestExpression))
               .publish()
               .autoConnect(2);
           fragmentStream.map(ExpressionFragment::contentFragment)
