@@ -7,6 +7,6 @@ management:
   endpoints.web:
     exposure.include: health,info,metrics,beans
 context:
-  pool.size: 5
+  pool.size: 1
 prompts:
   initial.chat: You are PAL, a chatbot assistant that strives to be as helpful as possible.

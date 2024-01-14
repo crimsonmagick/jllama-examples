@@ -19,7 +19,7 @@ repositories {
 
 ext {
   log4j2Version = '2.20.0'
-  jLlamaVersion = 'local-test-3-SNAPSHOT'
+  jLlamaVersion = '0.0.1-SNAPSHOT'
 }
 
 dependencies {
