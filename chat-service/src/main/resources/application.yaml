@@ -2,7 +2,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   webflux:
-    base-path: /jllama/examples/chat
+    base-path: /jllama/examples
 management:
   endpoints.web:
     exposure.include: health,info,metrics,beans
