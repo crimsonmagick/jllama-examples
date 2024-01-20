@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+* {
+  scrollbar-color: grey grey;  /* Makes the scrollbar grey */
+  scrollbar-width: thin;  /* Makes the scrollbar thin */
+}
+
+*::-webkit-scrollbar {
+  width: 5px;  /* Makes the scrollbar thin */
+  background-color: transparent;  /* Makes the scrollbar track transparent */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: grey;  /* Makes the scrollbar thumb grey */
+  border-radius: 5px;  /* Makes the scrollbar thumb rounded */
+}

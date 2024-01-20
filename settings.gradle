@@ -1,0 +1,3 @@
+rootProject.name = 'jllama-examples'
+include 'evaluator'
+include 'chat-service'
