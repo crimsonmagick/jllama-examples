@@ -20,7 +20,7 @@ import reactor.core.scheduler.Schedulers;
  */
 @RequiredArgsConstructor
 @Service
-public class LlamaService {
+public class LlamaChatService {
 
   private static final int TOP_K = 50;
   private static final float TEMP = 1.1f;

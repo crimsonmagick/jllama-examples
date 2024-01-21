@@ -1,4 +1,4 @@
-package net.jllama.examples.chat.adapters.inbound.rest;
+package net.jllama.examples.chat.adapters.inbound.rest.conversation;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +18,12 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/chat")
-public class ConversationSingletonController {
+public class SingletonConversationController {
 
-  private static final Logger log = LogManager.getLogger(ConversationSingletonController.class);
+  private static final Logger log = LogManager.getLogger(SingletonConversationController.class);
   private final ConversationSingletonService conversationSingletonService;
 
-  public ConversationSingletonController(
+  public SingletonConversationController(
       final ConversationSingletonServiceImpl conversationSingletonService) {
     this.conversationSingletonService = conversationSingletonService;
   }
@@ -52,7 +52,7 @@ public class ConversationSingletonController {
     return conversationSingletonService.sendExpression(id, expressionJson.content())
         .map(expressionValue -> new ExpressionJson(id, expressionValue.content(),
             expressionValue.actor().toString(), null))
-        .doOnError(ConversationSingletonController::error);
+        .doOnError(SingletonConversationController::error);
   }
 
   @PostMapping("/singleton/conversations")
@@ -63,7 +63,7 @@ public class ConversationSingletonController {
           return new ExpressionJson(conversation.getConversationId(), lastExpression.content(),
               lastExpression.actor().toString(), conversation.getSummary());
         })
-        .doOnError(ConversationSingletonController::error);
+        .doOnError(SingletonConversationController::error);
   }
 
   private static void error(final Throwable throwable) {

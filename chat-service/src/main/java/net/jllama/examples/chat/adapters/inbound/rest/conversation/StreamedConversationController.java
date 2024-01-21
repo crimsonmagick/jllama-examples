@@ -1,4 +1,4 @@
-package net.jllama.examples.chat.adapters.inbound.rest;
+package net.jllama.examples.chat.adapters.inbound.rest.conversation;
 
 import net.jllama.examples.chat.application.conversation.ConversationStreamedServiceImpl;
 import net.jllama.examples.chat.application.conversation.ExpressionFragment;
