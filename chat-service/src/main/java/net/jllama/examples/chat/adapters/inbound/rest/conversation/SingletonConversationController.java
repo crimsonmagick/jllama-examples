@@ -8,6 +8,7 @@ import net.jllama.examples.chat.application.conversation.ports.primary.Conversat
 import net.jllama.examples.chat.application.conversation.ports.primary.ConversationSummary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SingletonConversationController {
 
   private static final Logger log = LogManager.getLogger(SingletonConversationController.class);

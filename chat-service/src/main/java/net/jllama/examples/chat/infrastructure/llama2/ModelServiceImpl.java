@@ -1,5 +1,6 @@
 package net.jllama.examples.chat.infrastructure.llama2;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.jllama.api.Model;
@@ -29,13 +30,14 @@ public class ModelServiceImpl implements ModelService {
   }
 
   @Override
-  public Mono<List<Integer>> tokenize(String text, boolean addBos, boolean enableControlCharacters) {
+  public Mono<List<Integer>> tokenize(final String text, final boolean addBos,
+      final boolean enableControlCharacters) {
     return Mono.just(model.tokens().tokenize(text, addBos, enableControlCharacters));
   }
 
   @Override
   public Mono<String> detokenize(List<Integer> tokens) {
-    return Mono.just(model.tokens().detokenize(tokens));
+    return Mono.just(new String(model.tokens().detokenize(tokens), StandardCharsets.UTF_8));
   }
 
 }

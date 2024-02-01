@@ -31,7 +31,7 @@ public class SingletonLlamaController {
 
   @PostMapping("/tokens/tokenization")
   public Mono<TokenizationResponse> tokenize(@RequestBody TokenizationRequest tokenizationRequest) {
-    if (tokenizationRequest.text() == null || tokenizationRequest.text().isBlank()) {
+    if (tokenizationRequest.text() == null || tokenizationRequest.text().isEmpty()) {
       throw new IllegalArgumentException("No text provided for tokenization.");
     }
     final boolean addBos = tokenizationRequest.addBos() != null && tokenizationRequest.addBos();
