@@ -1,4 +1,4 @@
-package net.jllama.examples.chat.adapters.inbound.rest;
+package net.jllama.examples.chat.adapters.inbound.rest.user;
 
 import net.jllama.examples.chat.infrastructure.User;
 import net.jllama.examples.chat.infrastructure.UserDao;

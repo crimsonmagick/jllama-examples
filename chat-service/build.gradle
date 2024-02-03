@@ -33,11 +33,11 @@ dependencies {
 
   implementation "net.jllama:jni-bindings:${jLlamaVersion}"
   // Linux
-//  implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
-//  implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
+  implementation "net.jllama:jni-implementation:${jLlamaVersion}:linux_x64"
+  implementation "net.jllama:llama-cpp:${jLlamaVersion}:linux_x64"
   // Mac
-//  implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
-//  implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
+  implementation "net.jllama:jni-implementation:${jLlamaVersion}:os_x_arm64"
+  implementation "net.jllama:llama-cpp:${jLlamaVersion}:os_x_arm64"
 //   Windows
   implementation "net.jllama:jni-implementation:${jLlamaVersion}:windows_x64"
   implementation "net.jllama:llama-cpp:${jLlamaVersion}:windows_x64"
@@ -58,6 +58,20 @@ tasks.named('test') {
   }
 }
 
+import static org.gradle.internal.os.OperatingSystem.current
+
 bootRun {
   jvmArgs = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005']
+  // Uncomment below for testing custom builds of jni-implementation and llama-cpp
+//  final jniBuildType = 'release'
+//  final llamaCppBuildType = 'release'
+//  final bridgeRelativePath = "/build-cmake-${jniBuildType}/jni-implementation/${jniBuildType}"
+//  final bridgeAbsolutePath = parent.projectDir as String + bridgeRelativePath
+//  systemProperty 'java.library.path', bridgeAbsolutePath
+//  final llamaRelativePath = "/build-cmake-${llamaCppBuildType}/llama/${llamaCppBuildType}"
+//  final String llamaAbsolutePath = parent.projectDir as String + llamaRelativePath
+//  final dllPath = current().isWindows() ? 'PATH' :
+//      current().isMacOsX() ? 'DYLD_LIBRARY_PATH' : 'LD_LIBRARY_PATH'
+//  final envVariableValue = System.getenv(dllPath) ? System.getenv(dllPath) : ''
+//  environment dllPath, "${envVariableValue}${File.pathSeparator}${llamaAbsolutePath}"
 }

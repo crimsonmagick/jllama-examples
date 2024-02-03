@@ -2,14 +2,21 @@ package net.jllama.examples.chat.infrastructure.llama2.chat;
 
 import static net.jllama.api.Context.SequenceType.TOKEN;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import net.jllama.api.Batch;
 import net.jllama.api.Context;
 import net.jllama.api.Model;
 import net.jllama.api.Sequence;
 import net.jllama.api.Sequence.SequenceId;
+import net.jllama.examples.chat.infrastructure.encoding.EncodingException;
+import net.jllama.examples.chat.infrastructure.encoding.Utf8CharBuffer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -20,7 +27,9 @@ import reactor.core.scheduler.Schedulers;
  */
 @RequiredArgsConstructor
 @Service
-public class LlamaService {
+public class LlamaChatService {
+
+  private static final Logger log = LogManager.getLogger(LlamaChatService.class);
 
   private static final int TOP_K = 50;
   private static final float TEMP = 1.1f;
@@ -62,9 +71,14 @@ public class LlamaService {
                 .applyTemperature(TEMP)
                 .sample();
 
+            final Utf8CharBuffer buffer = new Utf8CharBuffer();
             for (int i = inputTokens.size() + 1;
                 token != eosToken && i < contextSize && !sink.isCancelled(); i++) {
-              sink.next(model.tokens().detokenize(token));
+              final byte[] detokenized = model.tokens().detokenize(token);
+              final Optional<String> nextStringPiece = getNextStringPiece(buffer, detokenized);
+              if (nextStringPiece.isPresent()) {
+                sink.next(nextStringPiece.get());
+              }
               batch.stage(sequence.piece(Collections.singletonList(token)));
               context.evaluate(batch);
               token = context.sampler(context.getLogits(sequence))
@@ -80,6 +94,25 @@ public class LlamaService {
             contextManager.releaseContext(id);
           }
         }));
+  }
+
+  private static Optional<String> getNextStringPiece(final Utf8CharBuffer buffer,
+      final byte[] utf8pieces) {
+    try {
+      final StringBuilder stringBuilder = new StringBuilder();
+      for (byte charPiece : utf8pieces) {
+        final Optional<String> utf8Char = buffer.buffer(charPiece)
+            .unbuffer();
+        utf8Char.ifPresent(stringBuilder::append);
+      }
+      if (!stringBuilder.isEmpty()) {
+        return Optional.of(stringBuilder.toString());
+      }
+    } catch (final EncodingException e) {
+      log.warn("Detokenized invalid UTF-8 character, discarding invalid bytes.", e);
+      buffer.clear();
+    }
+    return Optional.empty();
   }
 
   /**

@@ -1,5 +1,6 @@
 package net.jllama.llama.cpp.java.bindings.runner;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,9 +48,10 @@ public class Evaluator implements AutoCloseable {
   public void evaluate(final String prompt) {
     final List<Long> evaluationTimings = new ArrayList<>();
     final List<Integer> tokens = model.tokens().tokenize(prompt);
+    byte[] detokenized = model.tokens().detokenize(tokens);
 
     // initial prompt
-    System.out.print(model.tokens().detokenize(tokens));
+    System.out.print(new String(detokenized, StandardCharsets.UTF_8));
 
     final int seqId = nextSeqId++;
     final Batch batch = context.batch()
@@ -65,7 +67,8 @@ public class Evaluator implements AutoCloseable {
     List<Integer> previousTokens = new ArrayList<>();
     int previousToken = sample(context.getLogits(sequence), previousTokens);
 
-    System.out.print(model.tokens().detokenize(previousToken));
+    detokenized = model.tokens().detokenize(previousToken);
+    System.out.print(new String(detokenized, StandardCharsets.UTF_8));
 
     for (int i = tokens.size() + 1; previousToken != eosToken && i < contextSize; i++) {
       batch.stage(sequence.piece(Collections.singletonList(previousToken)));
@@ -74,10 +77,12 @@ public class Evaluator implements AutoCloseable {
       timeStamp2 = System.currentTimeMillis();
       evaluationTimings.add(timeStamp2 - timeStamp1);
       previousToken = sample(context.getLogits(sequence), previousTokens);
-      System.out.print(model.tokens().detokenize(previousToken));
+      detokenized = model.tokens().detokenize(previousToken);
+      System.out.print(new String(detokenized, StandardCharsets.UTF_8));
     }
     //noinspection OptionalGetWithoutIsPresent
-    System.out.printf("%navgEvalTime=%.2f ms%n", evaluationTimings.stream().mapToDouble(Long::doubleValue).average().getAsDouble());
+    System.out.printf("%navgEvalTime=%.2f ms%n",
+        evaluationTimings.stream().mapToDouble(Long::doubleValue).average().getAsDouble());
   }
 
   private int sample(final List<Float> logits, final List<Integer> previousTokens) {
