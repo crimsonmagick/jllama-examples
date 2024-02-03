@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "0af4dc20-d735-4609-a879-3c0a0ca48c4b",
+		"name": "ChatService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32668765"
+	},
+	"item": [
+		{
+			"name": "actuator",
+			"item": [
+				{
+					"name": "GET Beans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/actuator/info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"actuator",
+								"info"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "conversations",
+			"item": [
+				{
+					"name": "expressions",
+					"item": [
+						{
+							"name": "GET Expressions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/jllama/examples/chat/singleton/conversations/:conversationId/expressions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"jllama",
+										"examples",
+										"chat",
+										"singleton",
+										"conversations",
+										":conversationId",
+										"expressions"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "9a5e9a00-824d-4ac5-947c-1683ecf65738"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Expression Streamed",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"I forget my name sometimes.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/jllama/examples/chat/streamed/conversations/:uuid/expressions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"jllama",
+										"examples",
+										"chat",
+										"streamed",
+										"conversations",
+										":uuid",
+										"expressions"
+									],
+									"variable": [
+										{
+											"key": "uuid"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Expression",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"I'd like to know why you and your family moved to Montana\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/jllama/examples/chat/singleton/conversations/:uuid/expressions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"jllama",
+										"examples",
+										"chat",
+										"singleton",
+										"conversations",
+										":uuid",
+										"expressions"
+									],
+									"variable": [
+										{
+											"key": "uuid"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET Conversation Ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/chat/singleton/conversations/ids",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"chat",
+								"singleton",
+								"conversations",
+								"ids"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Conversation Streamed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "http://localhost:3000/",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Hi I'm Jim\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/chat/streamed/conversations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"chat",
+								"streamed",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Conversation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Hey how's it going?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/chat/singleton/conversations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"chat",
+								"singleton",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preflight Streamed Conversation",
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "default"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.5",
+								"type": "default"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"type": "default"
+							},
+							{
+								"key": "Access-Control-Request-Method",
+								"value": "POST",
+								"type": "default"
+							},
+							{
+								"key": "Access-Control-Request-Headers",
+								"value": "content-type,goodtimes",
+								"type": "default"
+							},
+							{
+								"key": "Referer",
+								"value": "http://localhost:3000/",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:3000",
+								"type": "default"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "default"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty",
+								"type": "default"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors",
+								"type": "default"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "same-site",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/chat/streamed/conversations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"chat",
+								"streamed",
+								"conversations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Llama",
+			"item": [
+				{
+					"name": "Detokenize",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tokens\": [\n        22172\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/llama/tokens/detokenization",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"llama",
+								"tokens",
+								"detokenization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Special Tokens",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/llama/tokens/special",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"llama",
+								"tokens",
+								"special"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tokenize",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"😊\",\n  \"addBos\": false,\n  \"enableControlCharacters\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/jllama/examples/llama/tokens/tokenization",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jllama",
+								"examples",
+								"llama",
+								"tokens",
+								"tokenization"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "conversationId",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
